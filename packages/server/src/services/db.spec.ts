@@ -15,36 +15,32 @@ jest.mock("@azure/cosmos", () => {
   return {
     CosmosClient: jest.fn().mockImplementation(() => {
       return {
-        database: jest.fn().mockImplementation(() => {
-          return {
-            container: jest.fn().mockImplementation(() => {
-              return {
-                items: {
-                  query: () => ({
-                    fetchAll: () => ({
-                      resources: [],
-                    }),
-                  }),
-                  create: (task: Task) => ({
-                    resource: task,
-                  }),
-                },
-                item: (id: string) => ({
-                  read: () => ({
-                    resource: newTask,
-                  }),
-                  replace: (task: Task) => ({
-                    resource: task,
-                  }),
-                  delete: () => {},
+        database: jest.fn().mockImplementation(() => ({
+          container: jest.fn().mockImplementation(() => ({
+            items: {
+              query: () => ({
+                fetchAll: () => ({
+                  resources: [],
                 }),
-                read: jest.fn().mockResolvedValue({
-                  resource: newTask,
-                }),
-              };
+              }),
+              create: (task: Task) => ({
+                resource: task,
+              }),
+            },
+            item: (id: string) => ({
+              read: () => ({
+                resource: newTask,
+              }),
+              replace: (task: Task) => ({
+                resource: task,
+              }),
+              delete: () => {},
             }),
-          };
-        }),
+            read: jest.fn().mockResolvedValue({
+              resource: newTask,
+            }),
+          })),
+        })),
       };
     }),
   };
